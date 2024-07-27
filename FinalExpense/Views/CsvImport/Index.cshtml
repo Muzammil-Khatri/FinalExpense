@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Records>
+
+@{
+    ViewData["Title"] = "CSV Records";
+}
+
+<h1>Upload CSV File</h1>
+<form asp-controller="CsvImport" asp-action="Index" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" name="csvFile" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Load</button>
+</form>
+
+@ViewData["Message"]
+
+@if (Model != null)
+{
+
+    @*<p>@Html.DisplayFor(model => model.FirstOrDefault().Message)</p>*@
+
+    <h1>CSV Records</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalesRep)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalesRep)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
