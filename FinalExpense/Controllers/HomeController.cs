@@ -27,11 +27,13 @@ namespace FinalExpense.Controllers
         
         public IActionResult Index()
         {
-            ChartsViewModel dataPoints = new ChartsViewModel();
+            ChartsViewModel Points = new ChartsViewModel();
 
-            dataPoints.DataPoints = _chartService.ChartPoints();
+            Points.ColumnChartPoints = _chartService.GetColumnChart();
+            Points.PieChartPoints = _chartService.GePieChart();
+            Points.LineChartPoints = _chartService.GeLineChart();
 
-            return View(dataPoints);
+            return View(Points);
            
         }
 

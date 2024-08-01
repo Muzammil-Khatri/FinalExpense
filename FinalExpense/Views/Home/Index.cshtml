@@ -1,7 +1,7 @@
 ﻿@model ChartsViewModel;
 @using Newtonsoft.Json;
 
-<script src="~/js/canvasjs.min.js"> </script>
+<script src="~/js/canvasjs.min.js"></script>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -12,37 +12,78 @@
 
 </div>
 
-<div id="chartContainer"></div>
+<div id="lineChart" style="width: 90%; height: 300px;display: inline-block;"></div><br />
+<div id="columnChart" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="pieChart" style="width: 45%; height: 300px;display: inline-block;" ></div>
 
 <script type="text/javascript">
 
     // result = JSON.parse('Html.Raw(JsonConvert.SerializeObject(Model.DataPoints))');
     // var result = Html.Raw(JsonConvert.SerializeObject(Model.DataPoints));
-    var result = @Html.Raw(Json.Serialize(Model.DataPoints));
+    var Cresult = @Html.Raw(Json.Serialize(Model.ColumnChartPoints));
 
-    var datapoints = [];
-    for (var i = 0; i < result.length; i++) {
-        datapoints.push({ label: result[i].x, y: result[i].y });
+    var columnPoints = [];
+    for (var i = 0; i < Cresult.length; i++) {
+        columnPoints.push({ label: Cresult[i].x, y: Cresult[i].y });
+    }
+
+    var Presult = @Html.Raw(Json.Serialize(Model.PieChartPoints));
+
+    var piePoints = [];
+    for (var i = 0; i < Presult.length; i++) {
+        piePoints.push({ label: Presult[i].x, y: Presult[i].y });
+    }
+
+    var Lresult = @Html.Raw(Json.Serialize(Model.LineChartPoints));
+
+    var linePoints = [];
+    for (var i = 0; i < Lresult.length; i++) {
+        linePoints.push({ label: Lresult[i].x, y: Lresult[i].y });
     }
 
     window.onload = function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            theme: "light2",
+        var columnchart = new CanvasJS.Chart("columnChart", {
+            theme: "light1",
             animationEnabled: true,
             title: {
-                text: "Total Transfers by Employee"
+                text: "Employee Activity"
             },
             subtitles: [
-                { text: "Try Resizing the Browser" }
+                { text: "Total Transfers by Employee" }
             ],
             data: [
                 {
                     type: "column", //change type to bar, line, area, pie, etc
-                    dataPoints: datapoints
+                    dataPoints: columnPoints
                 }
             ]
         });
-        chart.render();
+
+        var pieChart = new CanvasJS.Chart("pieChart", {
+            theme: "light1",
+            title :{
+	        text: "Billable Ratio"
+            },
+            data: [{
+	        type: "pie",
+	        dataPoints : piePoints
+            }]
+        });
+
+         var lineChart = new CanvasJS.Chart("lineChart", {
+            theme: "light1",
+            title :{
+	        text: "Transfers by Date"
+            },
+            data: [{
+	        type: "line",
+                dataPoints: linePoints
+            }]
+         });
+
+        columnchart.render();
+        pieChart.render();
+        lineChart.render();
     };
 </script>
 

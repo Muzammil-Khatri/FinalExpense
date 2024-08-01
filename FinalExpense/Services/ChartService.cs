@@ -17,7 +17,7 @@ namespace FinalExpense.Services
             _Context = context;
         }
 
-        public IEnumerable<Charts> ChartPoints()
+        public IEnumerable<Charts> GetColumnChart()
         {
 
            var Points = _Context.Transfers.AsEnumerable().GroupBy(s => s.SalesRep)
@@ -25,6 +25,26 @@ namespace FinalExpense.Services
 
             return Points;
             
+        }
+
+        public IEnumerable<Charts> GePieChart()
+        {
+
+            var Points = _Context.Transfers.AsEnumerable().GroupBy(s => s.Status)
+                .Select(g => new Charts { X = g.Key, Y = g.Select(l => l.Status).Count() });
+
+            return Points;
+
+        }
+
+        public IEnumerable<Charts> GeLineChart()
+        {
+
+            var Points = _Context.Transfers.AsEnumerable().GroupBy(s => s.Date.Date).OrderBy(s => s.Key)
+                .Select(g => new Charts { X = g.Key.ToString(), Y = g.Select(l => l.Date).Count() });
+
+            return Points;
+
         }
     }
 }

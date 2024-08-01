@@ -7,6 +7,8 @@ namespace FinalExpense.Models
 {
     public class ChartsViewModel
     {
-        public IEnumerable<Charts> DataPoints;
+        public IEnumerable<Charts> ColumnChartPoints;
+        public IEnumerable<Charts> PieChartPoints;
+        public IEnumerable<Charts> LineChartPoints;
     }
 }
