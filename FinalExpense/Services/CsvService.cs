@@ -20,7 +20,21 @@ namespace FinalExpense.Services
                 using var reader = new StreamReader(fileStream);
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    var records = csv.GetRecords<Records>().ToList() ;
+                    var records = new List<Records>();
+                    csv.Read();
+                    csv.ReadHeader();
+
+                    while (csv.Read())
+                    {
+                        var record = new Records
+                        {
+                            Date = csv.GetField<DateTime>("Date"),
+                            SalesRep = csv.GetField("SalesRep"),
+                            Status = csv.GetField("Status")
+                        };
+                        records.Add(record);
+                    }
+                    //var records = csv.GetRecords<Records>().ToList() ;
                     return records;
                 }
             }

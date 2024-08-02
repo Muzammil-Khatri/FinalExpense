@@ -40,8 +40,8 @@ namespace FinalExpense.Services
         public IEnumerable<Charts> GeLineChart()
         {
 
-            var Points = _Context.Transfers.AsEnumerable().GroupBy(s => s.Date.Date).OrderBy(s => s.Key)
-                .Select(g => new Charts { X = g.Key.ToString(), Y = g.Select(l => l.Date).Count() });
+            var Points = _Context.Transfers.AsEnumerable().OrderBy(s => s.Date).GroupBy(s => s.Date.ToShortDateString())
+                .Select(g => new Charts { X = g.Key, Y = g.Select(l => l.Date).Count() });
 
             return Points;
 
